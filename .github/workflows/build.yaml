@@ -22,7 +22,7 @@ jobs:
 
     steps:
       - name: "Get version"
-        run: 'echo "version=${GITHUB_REF#refs/*/}" >> $GITHUB_OUTPUT'
+        run: 'if [[ $GITHUB_REF =~ ^refs/tag/ ]]; then echo ${GITHUB_REF#refs/tag/}; else echo master; fi > "$GITHUB_OUTPUT"'
         id: "get-version"
 
       - uses: "actions/checkout@v3"
@@ -48,7 +48,7 @@ jobs:
 
     steps:
       - name: "Get version"
-        run: 'echo "version=${GITHUB_REF#refs/*/}" >> $GITHUB_OUTPUT'
+        run: 'if [[ $GITHUB_REF =~ ^refs/tag/ ]]; then echo ${GITHUB_REF#refs/tag/}; else echo master; fi > "$GITHUB_OUTPUT"'
         id: "get-version"
 
       - uses: "actions/checkout@v3"
@@ -74,8 +74,7 @@ jobs:
 
     steps:
       - name: "Get version"
-        run: 'echo "version=${GITHUB_REF#refs/*/}" >> $GITHUB_OUTPUT'
-        shell: "bash"
+        run: 'if [[ $GITHUB_REF =~ ^refs/tag/ ]]; then echo ${GITHUB_REF#refs/tag/}; else echo master; fi > "$GITHUB_OUTPUT"'
         id: "get-version"
 
       - uses: "actions/checkout@v3"
