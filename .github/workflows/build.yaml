@@ -21,17 +21,21 @@ jobs:
           - "Release"
 
     steps:
+      - name: "Get version"
+        run: 'echo "version=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV'
+        id: "get-version"
+
       - uses: "actions/checkout@v3"
         with:
           submodules: "recursive"
 
       - name: "Run build-macos.sh"
-        run: "./build-macos.sh ${{ matrix.config }}"
+        run: "./build-macos.sh ${{ matrix.config }}  ${{ steps.get-version.outputs.version }}"
 
       - uses: "actions/upload-artifact@v3"
         with:
           name: "libcurl-macos-${{ matrix.config }}"
-          path: "release/libcurl-macos-${{ matrix.config }}.tar.gz"
+          path: "release/*.tar.gz"
 
   BuildLinux:
     runs-on: "ubuntu-22.04"
@@ -43,17 +47,21 @@ jobs:
           - "Release"
 
     steps:
+      - name: "Get version"
+        run: 'echo "version=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV'
+        id: "get-version"
+
       - uses: "actions/checkout@v3"
         with:
           submodules: "recursive"
 
       - name: "Run build-linux.sh"
-        run: "./build-linux.sh ${{ matrix.config }}"
+        run: "./build-linux.sh ${{ matrix.config }} ${{ steps.get-version.outputs.version }}"
 
       - uses: "actions/upload-artifact@v3"
         with:
           name: "libcurl-linux-${{ matrix.config }}"
-          path: "release/libcurl-linux-${{ matrix.config }}.tar.gz"
+          path: "release/*.tar.gz"
 
   BuildWindows:
     runs-on: "windows-2022"
@@ -65,12 +73,17 @@ jobs:
           - "Release"
 
     steps:
+      - name: "Get version"
+        run: 'echo "version=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV'
+        shell: "bash"
+        id: "get-version"
+
       - uses: "actions/checkout@v3"
         with:
           submodules: "recursive"
 
       - name: "Run Build-Windows.ps1"
-        run: "./Build-Windows.ps1 -Config ${{ matrix.config }}"
+        run: "./Build-Windows.ps1 -Configuration ${{ matrix.config }} -Version ${{ steps.get-version.outputs.version }}"
 
       - uses: "actions/upload-artifact@v3"
         with:

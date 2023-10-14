@@ -1,4 +1,4 @@
-Param($Configuration)
+Param($Configuration, $Version)
 
 cmake curl -B build_$Configuration `
   -DCURL_USE_OPENSSL=OFF `
@@ -9,9 +9,9 @@ cmake curl -B build_$Configuration `
   -DCURL_USE_LIBSSH2=OFF `
   -DBUILD_TESTING=OFF `
   -DPICKY_COMPILER=OFF `
-  -DCMAKE_BUILD_TYPE=Release
+  -DCMAKE_BUILD_TYPE=$Configuration
 
 
 cmake --build build_$Configuration --config $Configuration
 cmake --install build_$Configuration --config $Configuration --prefix release/$Configuration
-Compress-Archive release\$Configuration\* release\libcurl-windows-$Configuration.zip -Verbose
+Compress-Archive release\$Configuration\* release\libcurl-windows-$Version-$Configuration.zip -Verbose
