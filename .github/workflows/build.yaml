@@ -84,6 +84,7 @@ jobs:
 
     steps:
       - name: "Get version"
+        shell: bash
         run: |
           if [[ $GITHUB_REF =~ ^refs/tag/ ]]
           then version="${GITHUB_REF#refs/tag/}"
