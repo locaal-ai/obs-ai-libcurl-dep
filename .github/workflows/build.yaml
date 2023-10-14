@@ -22,7 +22,7 @@ jobs:
 
     steps:
       - name: "Get version"
-        run: 'echo "version=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV'
+        run: 'echo "version=${GITHUB_REF#refs/*/}" >> $GITHUB_OUTPUT'
         id: "get-version"
 
       - uses: "actions/checkout@v3"
@@ -48,7 +48,7 @@ jobs:
 
     steps:
       - name: "Get version"
-        run: 'echo "version=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV'
+        run: 'echo "version=${GITHUB_REF#refs/*/}" >> $GITHUB_OUTPUT'
         id: "get-version"
 
       - uses: "actions/checkout@v3"
@@ -74,7 +74,7 @@ jobs:
 
     steps:
       - name: "Get version"
-        run: 'echo "version=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV'
+        run: 'echo "version=${GITHUB_REF#refs/*/}" >> $GITHUB_OUTPUT'
         shell: "bash"
         id: "get-version"
 
