@@ -1,6 +1,6 @@
 Param($Configuration)
 
-cmake libcurl -B build_$Configuration `
+cmake curl -B build_$Configuration `
   -DCURL_USE_OPENSSL=OFF `
   -DCURL_USE_SCHANNEL=ON `
   -DBUILD_CURL_EXE=OFF `

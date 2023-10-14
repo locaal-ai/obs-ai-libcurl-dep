@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-cmake libcurl -B build_$1 \
+cmake curl -B build_$1 \
   -DCURL_USE_OPENSSL=OFF \
   -DCURL_USE_SECTRANSP=ON \
   -DBUILD_CURL_EXE=OFF \
