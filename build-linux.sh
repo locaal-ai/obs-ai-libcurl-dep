@@ -1,7 +1,10 @@
 #!/bin/bash
 set -euo pipefail
 
-cmake curl -B build_$1 \
+CONFIG=${1?}
+VERSION=${2?}
+
+cmake curl -B build_$CONFIG \
   -DCURL_USE_OPENSSL=ON \
   -DBUILD_CURL_EXE=OFF \
   -DBUILD_SHARED_LIBS=OFF \
@@ -9,11 +12,11 @@ cmake curl -B build_$1 \
   -DCURL_USE_LIBSSH2=OFF \
   -DBUILD_TESTING=OFF \
   -DPICKY_COMPILER=OFF \
-  -DCMAKE_BUILD_TYPE=Release \
+  -DCMAKE_BUILD_TYPE=$CONFIG \
   -DCMAKE_C_FLAGS="-fPIC" \
   -DCMAKE_CXX_FLAGS="-fPIC" \
   -DCMAKE_POSITION_INDEPENDENT_CODE=ON
 
-cmake --build build_$1
-cmake --install build_$1 --prefix release/$1
-tar -C release/$1 -cvf release/libcurl-linux-$1.tar.gz .
+cmake --build build_$CONFIG
+cmake --install build_$CONFIG --prefix release/$CONFIG
+tar -C release/$CONFIG -cvf release/libcurl-linux-$VERSION-$CONFIG.tar.gz .
