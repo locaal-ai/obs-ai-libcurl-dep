@@ -121,7 +121,6 @@ jobs:
         uses: "actions/download-artifact@v3"
 
       - name: Generate Checksums 🪪
-        if: fromJSON(steps.check.outputs.validTag)
         run: |
           : Generate Checksums 🪪
           if [[ "${RUNNER_DEBUG}" ]]; then set -x; fi
