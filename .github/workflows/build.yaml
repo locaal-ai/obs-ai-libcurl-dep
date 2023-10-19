@@ -111,6 +111,9 @@ jobs:
     needs: [BuildMac, BuildLinux, BuildWindows]
     permissions:
       contents: "write"
+    defaults:
+      run:
+        shell: bash
     steps:
       - name: "Get Metadata"
         id: "metadata"
@@ -127,7 +130,7 @@ jobs:
           shopt -s extglob
 
           echo "### Checksums" > ${{ github.workspace }}/CHECKSUMS.txt
-          for file in ${{ github.workspace }}/@(*.exe|*.deb|*.ddeb|*.pkg|*.tar.gz|*.tar.xz|*.zip); do
+          for file in $(find ${{ github.workspace }} -name "*.tar.gz" -o -name "*.zip"); do
             echo "    ${file##*/}: $(sha256sum "${file}" | cut -d " " -f 1)" >> ${{ github.workspace }}/CHECKSUMS.txt
           done
 
