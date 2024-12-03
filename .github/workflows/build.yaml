@@ -34,6 +34,17 @@ jobs:
         with:
           submodules: "recursive"
 
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1.2
+
+      - uses: actions/cache@v4
+        id: ccache-cache
+        with:
+          path: ${{ github.workspace }}/.ccache
+          key: ${{ runner.os }}-ccache-${{ needs.check-event.outputs.config }}
+          restore-keys: |
+            ${{ runner.os }}-ccache-
+
       - name: "Run build-macos.sh"
         run: "./build-macos.sh ${{ matrix.config }}  ${{ steps.get-version.outputs.version }}"
 
@@ -65,6 +76,18 @@ jobs:
         with:
           submodules: "recursive"
 
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1.2
+
+      - uses: actions/cache@v4
+        id: ccache-cache
+        if: always()
+        with:
+          path: ${{ github.workspace }}/.ccache
+          key: ${{ runner.os }}-ccache-${{ needs.check-event.outputs.config }}
+          restore-keys: |
+            ${{ runner.os }}-ccache-
+
       - name: "Run build-linux.sh"
         run: "./build-linux.sh ${{ matrix.config }} ${{ steps.get-version.outputs.version }}"
 
@@ -93,16 +116,28 @@ jobs:
           echo "version=$version" > "$GITHUB_OUTPUT"
         id: "get-version"
 
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1.2
+
       - uses: "actions/checkout@v4"
         with:
           submodules: "recursive"
+
+      - uses: actions/cache@v4
+        id: ccache-cache
+        if: always()
+        with:
+          path: ${{ github.workspace }}/.ccache
+          key: ${{ runner.os }}-ccache-${{ needs.check-event.outputs.config }}
+          restore-keys: |
+            ${{ runner.os }}-ccache-
 
       - name: "Run Build-Windows.ps1"
         run: "./Build-Windows.ps1 -Configuration ${{ matrix.config }} -Version ${{ steps.get-version.outputs.version }}"
 
       - uses: "actions/upload-artifact@v4"
         with:
-          name: "libcurl-linux-${{ matrix.config }}"
+          name: "libcurl-windows-${{ matrix.config }}"
           path: "release/*.zip"
 
   Release:
