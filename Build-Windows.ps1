@@ -1,6 +1,9 @@
 Param($Configuration, $Version)
 
+# Set CMAKE_C_COMPILER_LAUNCHER and CMAKE_CXX_COMPILER_LAUNCHER
 cmake curl -B build_$Configuration `
+  -DCMAKE_C_COMPILER_LAUNCHER=ccache `
+  -DCMAKE_CXX_COMPILER_LAUNCHER=ccache `
   -DCURL_USE_OPENSSL=OFF `
   -DCURL_USE_SCHANNEL=ON `
   -DBUILD_CURL_EXE=OFF `
@@ -10,7 +13,6 @@ cmake curl -B build_$Configuration `
   -DBUILD_TESTING=OFF `
   -DPICKY_COMPILER=OFF `
   -DCMAKE_BUILD_TYPE=$Configuration
-
 
 cmake --build build_$Configuration --config $Configuration
 cmake --install build_$Configuration --config $Configuration --prefix release/$Configuration

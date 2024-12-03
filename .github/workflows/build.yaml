@@ -12,7 +12,7 @@ on:
 
 jobs:
   BuildMac:
-    runs-on: "macos-13"
+    runs-on: "macos-14"
 
     strategy:
       matrix:
@@ -30,14 +30,17 @@ jobs:
           echo "version=$version" > "$GITHUB_OUTPUT"
         id: "get-version"
 
-      - uses: "actions/checkout@v3"
+      - uses: "actions/checkout@v4"
         with:
           submodules: "recursive"
+
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1.2
 
       - name: "Run build-macos.sh"
         run: "./build-macos.sh ${{ matrix.config }}  ${{ steps.get-version.outputs.version }}"
 
-      - uses: "actions/upload-artifact@v3"
+      - uses: "actions/upload-artifact@v4"
         with:
           name: "libcurl-macos-${{ matrix.config }}"
           path: "release/*.tar.gz"
@@ -61,14 +64,17 @@ jobs:
           echo "version=$version" > "$GITHUB_OUTPUT"
         id: "get-version"
 
-      - uses: "actions/checkout@v3"
+      - uses: "actions/checkout@v4"
         with:
           submodules: "recursive"
+
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1.2
 
       - name: "Run build-linux.sh"
         run: "./build-linux.sh ${{ matrix.config }} ${{ steps.get-version.outputs.version }}"
 
-      - uses: "actions/upload-artifact@v3"
+      - uses: "actions/upload-artifact@v4"
         with:
           name: "libcurl-linux-${{ matrix.config }}"
           path: "release/*.tar.gz"
@@ -93,16 +99,19 @@ jobs:
           echo "version=$version" > "$GITHUB_OUTPUT"
         id: "get-version"
 
-      - uses: "actions/checkout@v3"
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1.2
+
+      - uses: "actions/checkout@v4"
         with:
           submodules: "recursive"
 
       - name: "Run Build-Windows.ps1"
         run: "./Build-Windows.ps1 -Configuration ${{ matrix.config }} -Version ${{ steps.get-version.outputs.version }}"
 
-      - uses: "actions/upload-artifact@v3"
+      - uses: "actions/upload-artifact@v4"
         with:
-          name: "libcurl-linux-${{ matrix.config }}"
+          name: "libcurl-windows-${{ matrix.config }}"
           path: "release/*.zip"
 
   Release:
@@ -121,7 +130,7 @@ jobs:
           echo "version=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_OUTPUT
 
       - name: "Download build artifacts"
-        uses: "actions/download-artifact@v3"
+        uses: "actions/download-artifact@v4"
 
       - name: Generate Checksums 🪪
         run: |
