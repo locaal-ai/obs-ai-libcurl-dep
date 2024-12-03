@@ -4,6 +4,10 @@ set -euo pipefail
 CONFIG=${1?}
 VERSION=${2?}
 
+# Set up ccache
+export CC="ccache gcc"
+export CXX="ccache g++"
+
 cmake curl -B build_$CONFIG \
     -DCURL_USE_OPENSSL=OFF \
     -DCURL_USE_SECTRANSP=ON \

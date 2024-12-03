@@ -1,5 +1,8 @@
 Param($Configuration, $Version)
 
+$env:CC = "ccache cl"
+$env:CXX = "ccache cl"
+
 cmake curl -B build_$Configuration `
   -DCURL_USE_OPENSSL=OFF `
   -DCURL_USE_SCHANNEL=ON `
